@@ -7,23 +7,23 @@
 \input{loanPricing-concordance}
 
 \section{Introduction}
-Risk based pricing has become the predonominant paradigm for financial institutions to set interest rates on their loans.  Most financial companies claim to do some sort of risk based pricing.  The rate of a given loan is set such that the income from the loan offsets the expected costs (including expected credit loss) as well as providing a sufficient return on the shareholders' capital which funded the loan.  This paradigm bases much of its intuition on the CAPM and Markowitz theories on equity pricing and optimal portfolio allocation.  
+Risk based pricing has become the predominant paradigm for financial institutions to set interest rates on their loans.  Most financial companies claim to do some sort of risk based pricing.  The rate of a given loan is set such that the income from the loan offsets the expected costs (including expected credit loss) as well as providing a sufficient return on the shareholders' capital which funded the loan.  This paradigm bases much of its intuition on the CAPM and Markowitz theories on equity pricing and optimal portfolio allocation.  
 \\
 \\
 This paper introduces several questions challenging the existing practices in the methodologies for pricing loans.  These questions are as follows:
 \begin{itemize}
-\item How should an asset with strong time-heterogeniety be priced?  Hint: a one year time horizon may not make sense.
+\item How should an asset with strong time-heterogeneity be priced?  Hint: a one year time horizon may not make sense.
 \item How should CECL guidelines impact pricing? Hint: a one year time horizon is completely out
 \item How much capital should be charged to a loan when stockholders treat a bank's default less heavily than debt holders
 \end{itemize}
 
-This paper does not attempt to perfectly answer these questions.  Any answer must be tempered by regulatory, accounting, and shareholder contraints.  The paper is intended make transparent the limitations that these questions expose.  
+This paper does not attempt to perfectly answer these questions.  Any answer must be tempered by regulatory, accounting, and shareholder constraints.  The paper is intended make transparent the limitations that these questions expose.  
 
 \section{Background on stock pricing}
 
 The most common models for the stock market assume that the log returns for a stock are normally distributed; that is,
 \[\mathrm{ln}\left(\frac{S_{t+s}}{S_t}\right) \sim \mathcal{N}(\mu s, \sigma \sqrt{s})\]
-(Note that in the Black-Scholes model, the mean of the log returns is actually proportional to \(\alpha-\frac{\sigma^2}{2}\), for simplicity in notation I define \(\mu=\alpha-\frac{\sigma^2}{2}\)).  In this model, \(\mu\) and \(\sigma\) are constants.  The model is time-homogenous: the distribution does not depend on time.  While these assumptions are violated in reality, they are not grossly violated in the sense that the model is still a good \emph{mental model} for the behavior of stocks and serves as a good ``first model'' when exploring trading strategies or pricing exotic options.  
+(Note that in the Black-Scholes model, the mean of the log returns is actually proportional to \(\alpha-\frac{\sigma^2}{2}\), for simplicity in notation I define \(\mu=\alpha-\frac{\sigma^2}{2}\)).  In this model, \(\mu\) and \(\sigma\) are constants.  The model is time-homogeneous: the distribution does not depend on time.  While these assumptions are violated in reality, they are not grossly violated in the sense that the model is still a good \emph{mental model} for the behavior of stocks and serves as a good ``first model'' when exploring trading strategies or pricing exotic options.  
 \\
 \\
 One of the common metrics for assessing the performance of a stock (or indeed, a portfolio of stocks) is the Sharpe ratio, defined \footnote{All performance metrics will be notated as an uppercase \(H\)} as 
@@ -32,45 +32,45 @@ One of the common metrics for assessing the performance of a stock (or indeed, a
 The Sharpe ratio compares the return of the stock to a risk free investment returning \(r\) relative to the ``risk'' of the stock \(\sigma\).  The excess return over the risk free rate represents the return for taking on the risk\footnote{This ratio is useful for comparing two stocks to see which provides a better risk adjusted return but does not have a hurdle or threshold for assessing whether the stock is a good buy.  It does not incorporate the diversification benefits of holding multiple stocks.  Targeting a Sharpe ratio with non-linear assets (eg options) will likely result in excess risk taking as \(\sigma\) is no longer an even close approximation for the risk in a non-linear portfolio.}.  The importance of the Sharpe ratio is that frequently a similar ratio is used to price loans.  While a Sharpe ratio remains a good ``mental model'' in the loan pricing arena, it does not even serve as a good ``first model'' for exploring appropriate pricing.
 
 
-\section{The simplist case: a single loan with no capital requirements}
+\section{The simplest case: a single loan with no capital requirements}
 
 To try to gain some intuition around the first two questions posed above, I consider a simple bank who is originating a single unsecured loan for a time period \(T\) for an amount \(P_0\).  The loan is funded entirely by debt at a constant rate \(r_d\).  The risk free rate is a constant \(r_f\).  The bank will ``go bankrupt'' if the single loan defaults.  The performance of the bank is entirely dependent on the one loan.  For simplicity, the loan will have a constant ``hazard'' rate; that is, the conditional probability of default over some time interval given that it hasn't already defaulted is the same over the life of the loan.  In symbols, 
 \[\mathbb{P}(\tau>t+s|\tau>s)=e^{-\lambda s}\]
 Where \(\tau\) is the time of default.  Also for simplicity, I assume that the loan amortizes continuously.  Following Terrence (2018), the net present value of this loan is 
-\[v_0= \frac{m}{r_f+\tilde{\lambda}}\left(1-e^{-(r+\tilde{\lambda})T}\right)\]
+\[v_0= \frac{m}{r_f+\tilde{\lambda}}\left(1-e^{-(r_f+\tilde{\lambda})T}\right)\]
 Where \(m\) is the continuous payment made on the loan and \(\tilde{\lambda}\) is the \emph{risk-neutral} hazard rate (the risk-neutrality is used so that the cash flows can be discounted at the risk free rate).  Note that \(\lambda<\tilde{\lambda}\); that is, the actual probability of default is less than the ``risk-neutral'' probability of default.  
 \\
 \\
-If the bank charged the borrower a rate of \(r_f+\tilde{\lambda}\), the present value of the future cash flows would equal the balance, that is \(v_0=P_0\).  Assuming that \(r_f+\tilde{\lambda}>r_d\), the bank will make a profit on average.  Note that in a world of perfect information \(r_f+\tilde{\lambda}=r_d\) since the debt holders have the exact same exposure as the bank.  
+If the bank charged the borrower a rate of \(r_b=r_f+\tilde{\lambda}\), the present value of the future cash flows would equal the balance, that is \(v_0=P_0\).  Assuming that \(r_f+\tilde{\lambda}>r_d\), the bank will make a profit on average.  Note that in a world of perfect information \(r_f+\tilde{\lambda}=r_d\) since the debt holders have the exact same exposure as the bank.  
 \\
 \\
-This simple case appears at first blush to be trivial.  However, actually implementing this is tricky.  What should \(\tilde{\lambda}\) be?  It can't be backed out from the historical loss rate on similar loans because its a risk-neutral parameter.  If these loans were commonly traded on the market the \(\tilde{\lambda}\) could be backed out from actual prices.  However, in most cases banks do not originate loans that are traded on the market.  If banks do, it is typically part of a pipeline that ends with a securitization and sale.  These pipelines tend to contain homogenous loans like commercial mortgage backed securities (MBS), resedential MBS, and auto.  
+This simple case appears at first blush to be trivial.  However, actually implementing this is tricky.  What should \(\tilde{\lambda}\) be?  It can't be backed out from the historical loss rate on similar loans because its a risk-neutral parameter.  If these loans were commonly traded on the market the \(\tilde{\lambda}\) could be backed out from actual prices.  However, in most cases banks do not originate loans that are traded on the market.  If banks do, it is typically part of a pipeline that ends with a secularization and sale.  These pipelines tend to contain homogeneous loans like commercial mortgage backed securities (MBS), residential MBS, and auto.  
 \\
 \\
 This simple case is not then trivial.  In fact, without knowing the utility function of the bank, the only statement I can make is that \(\tilde{\lambda}>\lambda\).
 
 \section{Extending the simple case to include equity holders}
-Despite my issues with using VaR (see below), I will use VaR as an estimate for economic capital and assume that capital is raised to meet the VaR number.  For reasons philisophically unanswerable, I assume that targeting a certain level of default is appropriate for the utility of stockholders.  This implies that the cost of equity remains constant for a given default probability.  In other words, 
+Despite my issues with using VaR (see below), I will use VaR as an estimate for economic capital and assume that capital is raised to meet the VaR number.  For reasons philosophically unanswerable, I assume that targeting a certain level of default is appropriate for the utility of stockholders.  This implies that the cost of equity remains constant for a given default probability.  In other words, 
 
 \[f(q)=c\]
 
 Where \(q\) is the dollar VaR, \(c\) is the required return on equity, and \(k=q\) where \(k\) is the level of capital.  As an example of what this implies, consider a bank originating very safe loans and requiring 3\% equity to cover losses at a 99.97\% level.  The required return on equity is perhaps 15\%.  The assumption is that if the bank starts becoming more risky and requires 6\% equity to cover losses at a 99.97\% level that the required return on equity will still be 15\%.  
 
-\subsection{The start of many assumptions and handwaves}
+\subsection{The start of many assumptions and hand-waves}
 
-Now I assume the exact opposite as the simple case: we now have a perfectly diversified portfolio where the only risk is expected loss.  In such a case the bank does not need any capital.  The rate a new loan is charged will be 
-\[r_f+\lambda\]
-There is no \(\tilde{\lambda}\) because there is no risk in this loan.  Hence the loan will be made if \(r_f+\lambda>r_d\).  Since there is no risk to the portfolio, lenders will lend to the bank at the risk free rate.  Hence the loan will always be made.  The additional interest rate on the loan will perfectly offset the expected loss and leave the bank indifferent to making the loan at every point.  While the net present value is correctly pricing, an easier mental model for the analysis that comes next will be to decompose the value of the loan into an expected loss non-expected loss portion.  
-
-\[r_f+\lambda_d=r_d+\mathbb{E}[L]\]
-
-The difference between this equation and the above equation is notational only.  Before the \(\lambda\) was being used both to discount and to create the payment \(m\).  Here \(m\) is given, hence \(\lambda\) is only available as a cost instead of increasing revenue, hence the underscore.  The expected loss is notational as well.  The rate of loss is roughly equal to \(\lambda_d\), allowing me to write the equation as 
-\[r_f+\lambda_d=r_d+\lambda_d\]
-This is the same result as before.  Any loan will be made.  Now consider a non-diversified portfolio (or with exposure to systemic risk). In this case the bank requires capital. The equation becomes 
-\[r_f+\tilde{\lambda}_d=w r_d +(1-w) c+\lambda_d\]
-Here \(w\) is the ratio of debt to assets.  While there is some risk in this bank now, I assume that \(w r_d=r_f\) which allows me to rewrite the equation slightly, 
-\[\tilde{\lambda}_d=(1-w)c+\lambda_d\]
+Now I assume the exact opposite as the simple case: we now have a perfectly diversified portfolio where the only risk is expected loss.  In such a case the bank does not need any capital.  The rate a new loan is charged will be at least \(r_f+\lambda\), that is \(r_b \geq r_f+\lambda\).  There is no \(\tilde{\lambda}\) because there is no risk in this loan.  Hence the loan will be made if \(r_f+\lambda>r_d\).  Since there is no risk to the portfolio, lenders will lend to the bank at the risk free rate.  Thus any loan where \(r_b\geq r_f+\lambda\) will be made.  
+\\
+\\
+Now consider a non-diversified portfolio (or with exposure to systemic risk). In this case the bank requires capital. The interest rate charged on the loan must be at least
+\[r_b\geq r_f+\tilde{\lambda}\]
+I decompose the right hand side as 
+\[r_f+\tilde{\lambda}=w r_d +(1-w) c+\lambda\]
+Where \(w\) is the ratio of debt to assets.  As there is some risk in this bank now, I assume that \(w r_d \approx r_f\) which allows me to rewrite the equation as 
+\[\tilde{\lambda}=(1-w)c+\lambda\]
 Now consider that \(1-w\) should be exactly the marginal capital required for the loan, and we have a simple formula for \(\tilde{\lambda}\).  
+\\
+\\
+I feel like I missed some justification somewhere.  Why must \(\tilde{\lambda}=(1-w)c+\lambda\)?  Why not a non-linear function?
 
 \subsection{Implication}
 
@@ -118,7 +118,7 @@ This points to the big flaw in the CECL framework.
 In a world with perfect information, the market value of a loan will be the same as the book value at origination (TODO: cite this).  CECL requires reserves on securities only if they are below book value (ie, essentially marking the securities to market).  All a bank has to do to forego the CECL reserves is to securitize the loan and hold it on the books at fair value.  
 \\
 \\
-In fact, the only occasion when it would be worthwhile to not securitize the loan is when there exists so much assymetric information that the market prices the loans below the book value minus the reserves.  This would happen when the market's discount is the following:
+In fact, the only occasion when it would be worthwhile to not securitize the loan is when there exists so much asymmetric information that the market prices the loans below the book value minus the reserves.  This would happen when the market's discount is the following:
 
 \[\tilde{\lambda}_{market} > \tilde{\lambda}+\lambda\]
 
