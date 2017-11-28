@@ -5,14 +5,23 @@
 \begin{document}
 \SweaveOpts{concordance=TRUE}
 
+\section{Outline}
+\begin{itemize}
+\item Show that modeling \(\lambda\) is sufficient regardless of EC model
+\item Show that an ``appropriate'' hurdle is \(w r_d + (1-w)c+\lambda\)
+\item Show that an ``appropriate'' hurdle is also \(r_f+\tilde{\lambda}\)
+\item Show that there exists a function \(f\) such that the present value of future cash flows under zero uncertainty is \(f(r)\) and that the present value of future cash flows under default uncertainty is \(f(r+\tilde{\lambda})\).  Show this for a broad range of loans (eg all fixed income)
+\item Derive a function \(g(r, \tilde{\lambda})\) for the present value of future cash flows under a doubly stochastic regime (ie, \(\tilde{\lambda}\) is stochastic)
+\end{itemize}
+
 \section{Introduction}
 Risk based pricing has become the predominant paradigm for financial institutions to set interest rates on their loans.  Most financial companies claim to do some sort of risk based pricing.  The rate of a given loan is set such that the income from the loan offsets the expected costs (including expected credit loss) as well as providing a sufficient return on the shareholders' capital which funded the loan.  This paradigm bases much of its intuition on the CAPM and Markowitz theories on equity pricing and optimal portfolio allocation.  
 \\
 \\
 This paper introduces several questions challenging the existing practices in the methodologies for pricing loans.  These questions are as follows:
 \begin{itemize}
-\item How should an asset with strong time-heterogeneity be priced?  Hint: a one year time horizon may not make sense.
-\item How should CECL guidelines impact pricing? Hint: a one year time horizon is completely out
+\item How should an asset with strong time-heterogeneity be priced?  
+\item How should CECL guidelines impact pricing? 
 \item How much capital should be charged to a loan when stockholders treat a bank's default less heavily than debt holders
 \end{itemize}
 
