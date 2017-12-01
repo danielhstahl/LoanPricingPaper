@@ -6,6 +6,59 @@
 \begin{document}
 \input{loanPricing-concordance}
 
+
+
+\section{Pricing}
+
+
+The rate charged on a loan should be at least equal to the cost of financing that loan.  The costs of a loan are a function of the price of the cash provided to the borrower and the potential losses from default.  Put mathematically, 
+\begin{align*}
+\mathbb{\tilde{E}}\left[ \int_0 ^ {\tau \wedge T} e^{-\int_0 ^ s r_u du} M_s ds \right]+\mathbb{\tilde{E}}\left[ \int_{\tau \wedge T} ^ \infty e^{-\int_0 ^ s r_u du} \gamma_s ds \right]\\ \geq 
+\mathbb{\tilde{E}}\left[ \int_0 ^ {\tau \wedge T} e^{\int _ 0 ^ s \left(l_u-r_u \right) du} \left(P_0-\rho_s\right) ds \right]
++\mathbb{\tilde{E}}\left[ \int_0 ^ {\tau \wedge T} e^{\int _ 0 ^ s \left(q_u-r_u \right) du} \rho_s ds \right]
+\end{align*}
+
+Here \(\tau\) is the (random) time of default, \(\mathbb{\tilde{E}}\) represents the expectation under the risk-neutral measure, \(M_t\) is the contractual cash flow at time \(t\), \(\gamma\) is the non-contractual payments after default (i.e., recoveries), \(x \wedge z\) is the minimum of \(x\) and \(z\), \(l_t\) is the cost of liabilities, \(r_t\) is the risk free rate, \(P_0\) is the amount lent, \(\rho_t\) is the capital required to finance the loan (which is a function of \(\tau\) and the correlation with the rest of the portfolio), and \(q_u\) is the required cost of equity.
+\\
+\\
+This equation is general, but largely uninstructive without additional structure.  For simplicity, I start with the case where \(\gamma_t = 0,\,M_s=M,\,r_t=r,\,l_t=l,\,q_t=q,\, \rho_t=\rho\).  This corresponds to the case of full loss given default (no recoveries), a (continuously) amortizing loan, constant interest rates and constant cost of funds, and a constant marginal capital required for the loan.  A constant marginal capital is one of the more intriguining assumptions as the current practice is to calculate marginal capital over a one year horizon; while in the equation above it is applied over the life of the loan.  The equation simplifies to
+
+\[
+M\mathbb{\tilde{E}}\left[ \int_0 ^ {\tau \wedge T} e^{-rs} ds \right]  \geq 
+\left(P_0-\rho \right)\mathbb{\tilde{E}}\left[ \int_0 ^ {\tau \wedge T} e^{(l-r)s}  ds \right]
++\rho\mathbb{\tilde{E}}\left[ \int_0 ^ {\tau \wedge T} e^{(q-r)s} ds \right]
+\]
+
+Letting \(g(\alpha)=\mathbb{\tilde{E}}\left[ \int_0 ^ {\tau \wedge T} e^{-rs} ds \right]\), 
+
+\[
+M g(-r) \geq 
+\left(P_0-\rho \right)g(l-r)
++\rho g(q-r)
+\]
+
+Since \(M\) is the payment for a continuously amortizing loan, it is computed as a function of the origination balance and interest rate charged to the loan as 
+\[M=\frac{P_0 r_b}{1-e^{-r_b T}}\]
+Substituting,
+
+\[
+\frac{P_0 r_b}{1-e^{-r_b T}} g(-r) \geq 
+\left(P_0-\rho \right)g(l-r)
++\rho g(q-r)
+\]
+
+Dividing by \(P_0\) and defining \(w=\frac{P_0-\rho}{P_0}\),
+
+\[
+\frac{ r_b}{1-e^{-r_b T}}  \geq 
+\frac{wg(l-r)
++(1-w) g(q-r)}{g(-r)}
+\]
+
+This is non-linear in \(r_b\), but numerical solvers can trivially solve for the minimum \(r_b\).
+
+
+
 \section{Outline}
 \begin{itemize}
 \item Show that modeling \(\lambda\) is sufficient regardless of EC model
