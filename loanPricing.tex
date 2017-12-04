@@ -19,9 +19,9 @@ The rate charged on a loan should be at least equal to the cost of financing tha
 \end{align*}
 
 Here \(\tau\) is the (random) time of default, \(\mathbb{\tilde{E}}\) represents the expectation under the risk-neutral measure, \(M_t\) is the contractual cash flow at time \(t\), \(\gamma\) is the non-contractual payments after default (i.e., recoveries), \(x \wedge z\) is the minimum of \(x\) and \(z\), \(l_t\) is the cost of liabilities, \(r_t\) is the risk free rate, \(P_0\) is the amount lent, \(\rho_t\) is the capital required to finance the loan (which is a function of \(\tau\) and the correlation with the rest of the portfolio), and \(q_u\) is the required cost of equity.
-\\
-\\
-This equation is general, but largely uninstructive without additional structure.  For simplicity, I start with the case where \(\gamma_t = 0,\,M_s=M,\,r_t=r,\,l_t=l,\,q_t=q,\, \rho_t=\rho\).  This corresponds to the case of full loss given default (no recoveries), a (continuously) amortizing loan, constant interest rates and constant cost of funds, and a constant marginal capital required for the loan.  A constant marginal capital is one of the more intriguining assumptions as the current practice is to calculate marginal capital over a one year horizon; while in the equation above it is applied over the life of the loan.  The equation simplifies to
+\subsection{Simple case of constant variables}
+This equation is general, but largely uninstructive without additional structure.  For simplicity, I start with the case where \(\gamma_t = 0,\,M_s=M,\,r_t=r,\,l_t=l,\,q_t=q,\, \rho_t=\rho\).  This corresponds to the case of full loss given default (no recoveries), a (continuously) amortizing loan, constant interest rates and constant cost of funds, and a constant marginal capital required for the loan.  %A constant marginal capital is one of the more intriguining assumptions as the current practice is to calculate marginal capital over a one year horizon; while in the equation above it is applied over the life of the loan.  
+The equation simplifies to
 
 \[
 M\mathbb{\tilde{E}}\left[ \int_0 ^ {\tau \wedge T} e^{-rs} ds \right]  \geq 
@@ -49,15 +49,35 @@ Substituting,
 
 Dividing by \(P_0\) and defining \(w=\frac{P_0-\rho}{P_0}\),
 
-\[
+\begin{equation} \label{simple}
 \frac{ r_b}{1-e^{-r_b T}}  \geq 
 \frac{wg(l-r)
 +(1-w) g(q-r)}{g(-r)}
-\]
-
+\end{equation}
 This is non-linear in \(r_b\), but numerical solvers can trivially solve for the minimum \(r_b\).
 
+\subsection{Assumption of exponentially distributed time to default}
 
+I know introduce another assumption: that time to default is exponentially distributed; that is \(\mathbb{P}(\tau>t)=e^{-\lambda t},\,\lambda>0\).  Under the risk neutral measure I use \(\tilde{\lambda}\) to denote the exponential parameter.  
+\\
+\\
+Under this assumption, \(g(\alpha)\) equals the following:
+
+
+\[g_\lambda(\alpha)=\mathbb{\tilde{E}}\left[\frac{1}{\alpha} \left(e^{\alpha\tau \wedge T} -1 \right)  \right]\]
+
+\[=\frac{1}{\alpha} \mathbb{E}\left[e^{\alpha \tau} \mathbb{I}_{\tau<T} +e^{\alpha T}\mathbb{I}_{\tau>T} -1\right]\]
+
+\[=\frac{1}{\alpha} \left(\frac{\tilde{\lambda} \left(e^{(\alpha-\tilde{\lambda})T} -1\right) }{\alpha-\tilde{\lambda}}+e^{(\alpha-\tilde{\lambda})T} -1 \right] \]
+
+\[=\frac{1}{\alpha - \tilde{\lambda}}\left(e^{(\alpha-\tilde{\lambda})T}-1\right)\]
+
+Using this \(g\), equation \ref{simple} can be written as follows:
+\[
+\frac{ r_b}{1-e^{-r_b T}}  \geq 
+\frac{w\frac{1}{l-r - \tilde{\lambda}}\left(e^{(l-r-\tilde{\lambda})T}-1\right)
++(1-w) \frac{1}{q-r - \tilde{\lambda}}\left(e^{(q-r-\tilde{\lambda})T}-1\right)}{\frac{1}{ r+ \tilde{\lambda}}\left(1-e^{-(r+\tilde{\lambda})T}\right)}
+\]
 
 \section{Outline}
 \begin{itemize}
